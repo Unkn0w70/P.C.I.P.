@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Site de Informações - Estilo G1</title>
+<title>P.C.I.P.</title>
 
 <style>
 
@@ -51,7 +51,271 @@
     text-decoration: underline;
 
   }
+/* Botão de abrir/fechar menu */
 
+    #menu-toggle {
+
+      background: #333;
+
+      color: white;
+
+      border: none;
+
+      padding: 12px 20px;
+
+      font-size: 16px;
+
+      cursor: pointer;
+
+      border-radius: 5px;
+
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+      user-select: none;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+
+    #menu-toggle:focus {
+
+      outline: none;
+
+      box-shadow: 0 0 0 3px #77aaff;
+
+    }
+
+
+    #menu-toggle .bar {
+
+      width: 22px;
+
+      height: 2px;
+
+      background: white;
+
+      position: relative;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+    #menu-toggle .bar::before,
+
+    #menu-toggle .bar::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 22px;
+
+      height: 2px;
+
+      background: white;
+
+      left: 0;
+
+      transition: all 0.3s ease;
+
+    }
+
+
+    #menu-toggle .bar::before {
+
+      top: -7px;
+
+    }
+
+
+    #menu-toggle .bar::after {
+
+      top: 7px;
+
+    }
+
+
+    #menu-toggle.open .bar {
+
+      background: transparent;
+
+    }
+
+
+    #menu-toggle.open .bar::before {
+
+      transform: rotate(45deg);
+
+      top: 0;
+
+    }
+
+
+    #menu-toggle.open .bar::after {
+
+      transform: rotate(-45deg);
+
+      top: 0;
+
+    }
+
+
+    /* Container do menu, inicialmente escondido */
+
+    nav {
+
+      width: 250px;
+
+      background: #333;
+
+      color: white;
+
+      border-radius: 5px;
+
+      overflow: hidden;
+
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+      margin-top: 10px;
+
+      max-height: 0;
+
+      overflow: hidden;
+
+      transition: max-height 0.4s ease;
+
+    }
+
+
+    nav.open {
+
+      max-height: 1000px; /* alto arbitrário para mostrar o menu */
+
+    }
+
+
+    nav ul {
+
+      list-style-type: none;
+
+      padding-left: 0;
+
+      margin: 0;
+
+    }
+
+
+    nav ul li {
+
+      border-bottom: 1px solid #444;
+
+    }
+
+
+    nav ul li:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    nav ul li > a {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      text-decoration: none;
+
+      color: white;
+
+      padding: 12px 20px;
+
+      cursor: pointer;
+
+      user-select: none;
+
+      transition: background 0.3s ease;
+
+    }
+
+
+    nav ul li > a:hover {
+
+      background: #555;
+
+    }
+
+
+    nav ul li > a .arrow {
+
+      transition: transform 0.3s ease;
+
+      font-weight: bold;
+
+    }
+
+
+    nav ul li.expanded > a .arrow {
+
+      transform: rotate(90deg);
+
+    }
+
+
+    nav ul ul {
+
+      background: #444;
+
+      max-height: 0;
+
+      overflow: hidden;
+
+      transition: max-height 0.3s ease;
+
+    }
+
+
+    nav ul li.expanded > ul {
+
+      max-height: 500px; /* arbitrário para caber submenu */
+
+    }
+
+
+    nav ul ul li a {
+
+      padding: 10px 40px;
+
+      font-size: 14px;
+
+      display: block;
+
+      color: #ddd;
+
+      border-bottom: 1px solid #555;
+
+    }
+
+
+    nav ul ul li a:hover {
+
+      background: #666;
+
+      color: white;
+
+    }
+
+
+    main {
+
+      max-width: 1140px
 
   /* Top Bar & Header like G1 */
 
@@ -348,7 +612,7 @@
 
     <div class="logo">INFORMAÇÕES</div>
 
-    <nav>
+    <!--<nav>
 
       <a href="#noticias">Notícias</a>
 
@@ -356,7 +620,7 @@
 
       <a href="#contato">Contato</a>
 
-    </nav>
+    </nav>-->
 
   </header>
 
