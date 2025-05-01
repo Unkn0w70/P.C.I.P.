@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Site de Informações - Estilo G1</title>
+
+<style>
+
+  /* Reset some default styles */
+
+  * {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+  }
+
+
+  body {
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    background-color: #fff;
+
+    color: #222;
+
+    line-height: 1.4;
+
+  }
+
+
+  a {
+
+    color: #034ea2;
+
+    text-decoration: none;
+
+  }
+
+  a:hover {
+
+    text-decoration: underline;
+
+  }
+
+
+  /* Top Bar & Header like G1 */
+
+  .top-bar {
+
+    background-color: #114077;
+
+    color: white;
+
+    padding: 6px 15px;
+
+    font-size: 14px;
+
+    text-align: right;
+
+  }
+
+
+  header {
+
+    border-bottom: 2px solid #114077;
+
+    padding: 10px 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+  }
+
+  .logo {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    color: #114077;
+
+    font-family: "Arial Black", Gadget, sans-serif;
+
+  }
+
+
+  nav {
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+  }
+
+  nav a {
+
+    margin-left: 20px;
+
+    color: #114077;
+
+  }
+
+  nav a:first-child {
+
+    margin-left: 0;
+
+  }
+
+  nav a:hover {
+
+    color: #fb4226;
+
+  }
+
+
+  main {
+
+    max-width: 1140px;
+
+    margin: 25px auto;
+
+    padding: 0 15px;
+
+  }
+
+
+  .featured-article {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    background-color: #f9f9f9;
+
+    border: 1px solid #ddd;
+
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    margin-bottom: 25px;
+
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+
+  }
+
+
+  .featured-article img {
+
+    width: 100%;
+
+    max-width: 480px;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+
+  }
+
+
+  .featured-content {
+
+    padding: 20px 25px;
+
+    flex: 1 1 300px;
+
+  }
+
+
+  .featured-content h1 {
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+
+    color: #114077;
+
+  }
+
+
+  .featured-content p {
+
+    font-size: 16px;
+
+    color: #444;
+
+  }
+
+
+  .section-title {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+
+    color: #114077;
+
+  }
+
+
+  /* News cards container */
+
+  .news-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+
+    gap: 20px;
+
+  }
+
+
+  .news-card {
+
+    border: 1px solid #ddd;
+
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    background-color: #fff;
+
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition: box-shadow 0.3s;
+
+  }
+
+  .news-card:hover {
+
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
+
+  }
+
+
+  .news-card img {
+
+    width: 100%;
+
+    height: 160px;
+
+    object-fit: cover;
+
+  }
+
+
+  .news-card-content {
+
+    padding: 15px 20px;
+
+    flex-grow: 1;
+
+  }
+
+
+  .news-card-content h3 {
+
+    margin-bottom: 10px;
+
+    font-size: 18px;
+
+    color: #114077;
+
+  }
+
+
+  .news-card-content p {
+
+    font-size: 14px;
+
+    color: #555;
+
+  }
+
+
+  footer {
+
+    background-color: #114077;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 20px 15px;
+
+    margin-top: 40px;
+
+    font-size: 14px;
+
+    user-select: none;
+
+  }
+
+
+  /* Responsive */
+
+  @media (max-width: 768px) {
+
+    .featured-article {
+
+      flex-direction: column;
+
+    }
+
+    .featured-article img {
+
+      max-width: 100%;
+
+      height: auto;
+
+    }
+
+  }
+
+</style>
+
+</head>
+
+<body>
+
+  <div class="top-bar">
+
+    Siga-nos: <a href="#" target="_blank" rel="noopener">Facebook</a> | <a href="#" target="_blank" rel="noopener">Twitter</a> | <a href="#" target="_blank" rel="noopener">Instagram</a>
+
+  </div>
+
+  <header>
+
+    <div class="logo">INFORMAÇÕES</div>
+
+    <nav>
+
+      <a href="#noticias">Notícias</a>
+
+      <a href="#sobre">Sobre</a>
+
+      <a href="#contato">Contato</a>
+
+    </nav>
+
+  </header>
+
+  <main>
+
+    <section class="featured-article" id="noticias">
+
+      <img src="https://picsum.photos/id/1011/480/320" alt="Notícia em destaque" />
+
+      <div class="featured-content">
+
+        <h1>Notícia em Destaque: Avanços Tecnológicos Transformam o Brasil</h1>
+
+        <p>O país tem observado um crescimento significativo em tecnologia, gerando novas oportunidades para empresas e profissionais.</p>
+
+        <a href="#" style="color:#fb4226; font-weight:bold; text-decoration:none;">Leia mais &raquo;</a>
+
+      </div>
+
+    </section>
+
+
+    <section id="mais-noticias">
+
+      <h2 class="section-title">Mais Notícias</h2>
+
+      <div class="news-grid">
+
+
+        <article class="news-card">
+
+          <img src="https://picsum.photos/id/1025/400/250" alt="Notícia 1" />
+
+          <div class="news-card-content">
+
+            <h3><a href="#">Educação no Brasil: Novas metodologias ganham espaço</a></h3>
+
+            <p>As escolas buscam inovação para melhorar o aprendizado dos alunos em todo o território nacional.</p>
+
+          </div>
+
+        </article>
+
+
+        <article class="news-card">
+
+          <img src="https://picsum.photos/id/1033/400/250" alt="Notícia 2" />
+
+          <div class="news-card-content">
+
+            <h3><a href="#">Economia se recupera com a retomada da indústria</a></h3>
+
+            <p>Dados indicam crescimento no setor industrial brasileiro nos últimos meses.</p>
+
+          </div>
+
+        </article>
+
+
+        <article class="news-card">
+
+          <img src="https://picsum.photos/id/1043/400/250" alt="Notícia 3" />
+
+          <div class="news-card-content">
+
+            <h3><a href="#">Meio ambiente: Iniciativas sustentáveis ganham força</a></h3>
+
+            <p>Empresas e governos investem em projetos para proteção ambiental no país.</p>
+
+          </div>
+
+        </article>
+
+
+        <article class="news-card">
+
+          <img src="https://picsum.photos/id/1050/400/250" alt="Notícia 4" />
+
+          <div class="news-card-content">
+
+            <h3><a href="#">Saúde Pública: Novos hospitais inaugurados em grandes cidades</a></h3>
+
+            <p>Ampliação da rede pública de saúde ajuda a melhorar o atendimento à população.</p>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <section id="sobre" style="margin-top: 50px;">
+
+      <h2 class="section-title">Sobre Nós</h2>
+
+      <p>Este site tem a missão de fornecer informações confiáveis e atualizadas sobre os principais acontecimentos do Brasil e do mundo, com foco na clareza, imparcialidade e qualidade jornalística.</p>
+
+    </section>
+
+
+    <section id="contato" style="margin-top: 50px; margin-bottom: 30px;">
+
+      <h2 class="section-title">Contato</h2>
+
+      <p>Para entrar em contato, envie um e-mail para <a href="mailto:contato@siteinformacoes.com">contato@siteinformacoes.com</a> ou ligue para (11) 1234-5678.</p>
+
+    </section>
+
+  </main>
+
+  <footer>
+
+    &copy; 2024 Site de Informações. Todos os direitos reservados.
+
+  </footer>
+
+</body>
+
+</html>
