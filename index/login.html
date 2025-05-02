@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Página de Login</title>
+
+<style>
+
+  /* Reset básico */
+
+  * {
+
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+
+  }
+
+  body, html {
+
+    height: 100%;
+
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    background: linear-gradient(135deg, #667eea, #764ba2);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+  }
+
+  .container {
+
+    background: white;
+
+    border-radius: 12px;
+
+    box-shadow: 0 12px 26px rgba(0,0,0,0.2);
+
+    width: 90%;
+
+    max-width: 360px;
+
+    padding: 40px 30px 30px;
+
+    text-align: center;
+
+  }
+
+  .logo {
+
+    margin-bottom: 25px;
+
+  }
+
+  .logo img {
+
+    width: 120px;
+
+    height: auto;
+
+    margin: 0 auto;
+
+  }
+
+  h2 {
+
+    margin-bottom: 30px;
+
+    color: #333;
+
+    font-weight: 600;
+
+  }
+
+  form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+  }
+
+  input[type="text"],
+
+  input[type="password"] {
+
+    padding: 12px 15px;
+
+    font-size: 16px;
+
+    border: 2px solid #eee;
+
+    border-radius: 8px;
+
+    transition: border-color 0.3s ease;
+
+  }
+
+  input[type="text"]:focus,
+
+  input[type="password"]:focus {
+
+    border-color: #667eea;
+
+    outline: none;
+
+  }
+
+  button {
+
+    padding: 12px;
+
+    background-color: #667eea;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+
+  }
+
+  button:hover {
+
+    background-color: #5a67d8;
+
+  }
+
+  .message {
+
+    margin-top: 20px;
+
+    font-weight: 600;
+
+  }
+
+  .message.error {
+
+    color: #e53e3e;
+
+  }
+
+  .message.success {
+
+    color: #38a169;
+
+  }
+
+  @media (max-width: 400px) {
+
+    .container {
+
+      width: 95%;
+
+      padding: 30px 20px 20px;
+
+    }
+
+    .logo img {
+
+      width: 100px;
+
+    }
+
+    button {
+
+      font-size: 15px;
+
+      padding: 10px;
+
+    }
+
+  }
+
+</style>
+
+</head>
+
+<body>
+
+  <div class="container" role="main" aria-label="Formulário de login">
+
+    <div class="logo" aria-label="Logo do site">
+
+      <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&dpr=2" alt="Logo do Site" />
+
+    </div>
+
+    <h2>Faça seu Login</h2>
+
+    <form id="loginForm" aria-describedby="message">
+
+      <input type="text" id="username" name="username" placeholder="Usuário" autocomplete="username" required aria-required="true" />
+
+      <input type="password" id="password" name="password" placeholder="Senha" autocomplete="current-password" required aria-required="true" />
+
+      <button type="submit" aria-label="Entrar no sistema">Entrar</button>
+
+    </form>
+
+    <div id="message" class="message" role="alert" aria-live="polite"></div>
+
+  </div>
+
+
+  <script>
+
+    (function(){
+
+      const users = [
+
+        { username: 'admin', password: '1234' },
+
+        { username: 'user', password: 'abcd' }
+
+      ];
+
+
+      const loginForm = document.getElementById('loginForm');
+
+      const messageDiv = document.getElementById('message');
+
+
+      loginForm.addEventListener('submit', function(event) {
+
+        event.preventDefault();
+
+
+        const usernameInput = loginForm.username.value.trim();
+
+        const passwordInput = loginForm.password.value;
+
+
+        // Check credentials against the users list
+
+        const userFound = users.find(user => user.username === usernameInput && user.password === passwordInput);
+
+
+        if (userFound) {
+
+          messageDiv.textContent = `Bem-vindo(a), ${usernameInput}! Login aprovado.`;
+
+          messageDiv.className = 'message success';
+
+          loginForm.reset();
+
+          // Aqui poderia redirecionar, por exemplo:
+
+          // window.location.href = 'dashboard.html'; 
+
+        } else {
+
+          messageDiv.textContent = 'Usuário ou senha incorretos. Tente novamente.';
+
+          messageDiv.className = 'message error';
+
+        }
+
+      });
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
