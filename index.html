@@ -8,307 +8,189 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  
-  
-<title>P.C.I.P.</title>
+<title>Página de Login</title>
 
 <style>
 
-  /* Reset */
+  /* Reset básico */
 
   * {
 
     box-sizing: border-box;
 
-  }
-
-  body {
-
     margin: 0;
 
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
-    background-color: #d1b082;
-
-    color: #333;
+    padding: 0;
 
   }
 
-  a {
+  body, html {
 
-    text-decoration: none;
+    height: 100%;
 
-    color: inherit;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-  }
-
-  header {
-
-    background-color: #3f2c28;
-
-    color: white;
-
-    padding: 12px 20px;
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 100;
+    background: linear-gradient(135deg, #667eea, #764ba2);
 
     display: flex;
 
-    justify-content: space-between;
+    justify-content: center;
 
     align-items: center;
 
   }
 
-  header h1 {
+  .container {
 
-    font-weight: 700;
+    background: white;
 
-    margin: 0;
+    border-radius: 12px;
 
-    font-size: 1.5rem;
+    box-shadow: 0 12px 26px rgba(0,0,0,0.2);
 
-    letter-spacing: 2px;
+    width: 90%;
 
-  }
+    max-width: 360px;
 
-  /* Menu */
-
-  nav {
-
-    position: relative;
-
-  }
-
-  .menu-button {
-
-    background: none;
-
-    border: none;
-
-    color: white;
-
-    font-size: 1.6rem;
-
-    cursor: pointer;
-
-    display: none;
-
-  }
-
-  ul.menu {
-
-    list-style: none;
-
-    display: flex;
-
-    gap: 20px;
-
-    margin: 0;
-
-    padding: 0;
-
-    user-select: none;
-
-  }
-
-  ul.menu li {
-
-    position: relative;
-
-  }
-
-  ul.menu li a {
-
-    font-weight: 600;
-
-    padding: 8px 6px;
-
-    display: inline-block;
-
-  }
-
-  ul.menu li:hover,
-
-  ul.menu li a:hover {
-
-    background-color: #18120a;
-
-    border-radius: 3px;
-
-  }
-
-
-  /* Menu expanded style for mobile */
-
-  @media (max-width: 768px) {
-
-    .menu-button {
-
-      display: block;
-
-    }
-
-    ul.menu {
-
-      flex-direction: column;
-
-      background-color: #3f2c28;
-
-      position: absolute;
-
-      top: 100%;
-
-      right: 0;
-
-      width: 200px;
-
-      max-height: 0;
-
-      overflow: hidden;
-
-      transition: max-height 0.3s ease;
-
-      border-radius: 0 0 5px 5px;
-
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-
-    }
-
-    ul.menu.expanded {
-
-      max-height: 500px; /* enough to show all items */
-
-    }
-
-    ul.menu li {
-
-      padding: 0;
-
-    }
-
-    ul.menu li a {
-
-      padding: 12px 16px;
-
-      border-bottom: 1px solid #000000;
-
-    }
-
-    ul.menu li:last-child a {
-
-      border-bottom: none;
-
-    }
-
-  }
-
-
-  main {
-
-    max-width: 1100px;
-
-    margin: 20px auto 40px;
-
-    padding: 0 15px;
-
-  }
-
-  .section-title {
-
-    border-bottom: 3px solid #000000;
-
-    color: #000000;
-
-    font-weight: 700;
-
-    margin-bottom: 18px;
-
-    font-size: 1.4rem;
-
-  }
-
-
-  /* Grid for news */
-
-  .news-grid {
-
-    display: grid;
-
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-
-    gap: 20px;
-
-  }
-
-  article.news-item {
-
-    border-bottom: 1px solid #000;
-
-    padding-bottom: 15px;
-
-    margin-bottom: 15px;
-
-  }
-
-  article.news-item img {
-
-    width: 100%;
-
-    border-radius: 4px;
-
-    object-fit: cover;
-
-    max-height: 160px;
-
-  }
-
-  article.news-item h2 {
-
-    font-size: 1.1rem;
-
-    margin: 10px 0 8px;
-
-    font-weight: 700;
-
-    color: #000000;
-
-  }
-
-  article.news-item p {
-
-    font-size: 0.9rem;
-
-    line-height: 1.3;
-
-    color: #000;
-
-  }
-
-  article.news-item time {
-
-    font-size: 0.8rem;
-
-    color: #000;
-
-  }
-
-
-  footer {
-
-    background-color: #222;
-
-    color: #ccc;
+    padding: 40px 30px 30px;
 
     text-align: center;
 
-    padding: 15px 10px;
+  }
 
-    font-size: 0.85rem;
+  .logo {
+
+    margin-bottom: 25px;
+
+  }
+
+  .logo img {
+
+    width: 120px;
+
+    height: auto;
+
+    margin: 0 auto;
+
+  }
+
+  h2 {
+
+    margin-bottom: 30px;
+
+    color: #333;
+
+    font-weight: 600;
+
+  }
+
+  form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+  }
+
+  input[type="text"],
+
+  input[type="password"] {
+
+    padding: 12px 15px;
+
+    font-size: 16px;
+
+    border: 2px solid #eee;
+
+    border-radius: 8px;
+
+    transition: border-color 0.3s ease;
+
+  }
+
+  input[type="text"]:focus,
+
+  input[type="password"]:focus {
+
+    border-color: #667eea;
+
+    outline: none;
+
+  }
+
+  button {
+
+    padding: 12px;
+
+    background-color: #667eea;
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+
+  }
+
+  button:hover {
+
+    background-color: #5a67d8;
+
+  }
+
+  .message {
+
+    margin-top: 20px;
+
+    font-weight: 600;
+
+  }
+
+  .message.error {
+
+    color: #e53e3e;
+
+  }
+
+  .message.success {
+
+    color: #38a169;
+
+  }
+
+  @media (max-width: 400px) {
+
+    .container {
+
+      width: 95%;
+
+      padding: 30px 20px 20px;
+
+    }
+
+    .logo img {
+
+      width: 100px;
+
+    }
+
+    button {
+
+      font-size: 15px;
+
+      padding: 10px;
+
+    }
 
   }
 
@@ -318,139 +200,90 @@
 
 <body>
 
-<header>
+  <div class="container" role="main" aria-label="Formulário de login">
 
-  <h1>P.C.I.P.</h1>
+    <div class="logo" aria-label="Logo do site">
 
-  <nav>
-
-    <button aria-label="Abrir menu" class="menu-button" id="menuToggle">&#9776;</button>
-
-    <ul class="menu" id="menu">
-
-      <li><a href="#">Página Inicial</a></li>
-
-      <li><a href="https://unkn0w70.github.io/P.C.I.P./index/introduction">Introdução</a></li>
-
-      <li><a href="#">Elementos</a></li>
-
-      <li><a href="#">Criaturas</a></li>
-
-      <li><a href="#">Estimativas Técnicas</a></li>
-
-      <li><a href="#">Invocação</a></li>
-
-     <li><a href="#">Manifestações</a></li>
-
-
-    </ul>
-
-  </nav>
-
-</header>
-
-<main>
-
-  <section>
-
-    <h2 class="section-title">Últimas Notícias</h2>
-
-    <div class="news-grid">
-
-      <article class="news-item">
-
-        <img src="https://i.pinimg.com/736x/a7/1e/6d/a71e6da0e8d2f46a534741f2c4120f0e.jpg" alt="Imagem da notícia 1" />
-
-        <h2>Criança "desaparecida" em Derry é encontrada com marcas estranhas.</h2>
-
-        <time datetime="2025-05-01">01 de maio de 2025</time>
-
-        <p>Durante buscas da fundação, o corpo da criança foi encontrada próximo de um pântano, o corpo tinham sinais estranhos e haviam rastros de algo saindo do lago.</p>
-
-      </article>
-
-      <article class="news-item">
-
-        <img src="https://picsum.photos/id/1012/400/220" alt="Imagem da notícia 2" />
-
-        <h2>Economia cresce 2,5% no último trimestre</h2>
-
-        <time datetime="2024-06-13">13 de junho de 2024</time>
-
-        <p>Dados divulgados mostram recuperação econômica forte após períodos difíceis devido à pandemia.</p>
-
-      </article>
-
-      <article class="news-item">
-
-        <img src="https://picsum.photos/id/1013/400/220" alt="Imagem da notícia 3" />
-
-        <h2>Novos lançamentos tecnológicos prometem revolucionar o mercado</h2>
-
-        <time datetime="2024-06-14">14 de junho de 2024</time>
-
-        <p>Empresas anunciam dispositivos com inovações em inteligência artificial e conectividade 5G.</p>
-
-      </article>
-
-      <article class="news-item">
-
-        <img src="https://picsum.photos/id/1014/400/220" alt="Imagem da notícia 4" />
-
-        <h2>Seleção brasileira se prepara para a Copa América</h2>
-
-        <time datetime="2024-06-12">12 de junho de 2024</time>
-
-        <p>Jogadores participam de treinamentos intensivos visando o título na competição continental.</p>
-
-      </article>
+      <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&dpr=2" alt="Logo do Site" />
 
     </div>
 
-  </section>
+    <h2>Faça seu Login</h2>
 
-</main>
+    <form id="loginForm" aria-describedby="message">
 
-<footer>
+      <input type="text" id="username" name="username" placeholder="Usuário" autocomplete="username" required aria-required="true" />
 
-  &copy; 2025 P.C.I.P. - Direitos reservados
+      <input type="password" id="password" name="password" placeholder="Senha" autocomplete="current-password" required aria-required="true" />
 
-</footer>
+      <button type="submit" aria-label="Entrar no sistema">Entrar</button>
 
+    </form>
 
-<script>
+    <div id="message" class="message" role="alert" aria-live="polite"></div>
 
-  const menuToggle = document.getElementById('menuToggle');
-
-  const menu = document.getElementById('menu');
-
-
-  menuToggle.addEventListener('click', () => {
-
-    menu.classList.toggle('expanded');
-
-    const expanded = menu.classList.contains('expanded');
-
-    menuToggle.setAttribute('aria-label', expanded ? 'Fechar menu' : 'Abrir menu');
-
-  });
+  </div>
 
 
-  // Close menu if clicking outside on mobile
+  <script>
 
-  document.addEventListener('click', (event) => {
+    (function(){
 
-    if (!menu.contains(event.target) && !menuToggle.contains(event.target) && menu.classList.contains('expanded')) {
+      const users = [
 
-      menu.classList.remove('expanded');
+        { username: 'admin', password: '1234' },
 
-      menuToggle.setAttribute('aria-label', 'Abrir menu');
+        { username: 'user', password: 'abcd' }
 
-    }
+      ];
 
-  });
 
-</script>
+      const loginForm = document.getElementById('loginForm');
+
+      const messageDiv = document.getElementById('message');
+
+
+      loginForm.addEventListener('submit', function(event) {
+
+        event.preventDefault();
+
+
+        const usernameInput = loginForm.username.value.trim();
+
+        const passwordInput = loginForm.password.value;
+
+
+        // Check credentials against the users list
+
+        const userFound = users.find(user => user.username === usernameInput && user.password === passwordInput);
+
+
+        if (userFound) {
+
+          messageDiv.textContent = `Bem-vindo(a), ${usernameInput}! Login aprovado.`;
+
+          messageDiv.className = 'message success';
+
+          loginForm.reset();
+          
+
+          // Aqui poderia redirecionar, por exemplo:
+
+          window.location.href = 'https://unkn0w70.github.io/P.C.I.P./index/initial_page'; 
+
+        } else {
+
+          messageDiv.textContent = 'Usuário ou senha incorretos. Tente novamente.';
+
+          messageDiv.className = 'message error';
+
+        }
+
+      });
+
+    })();
+
+  </script>
 
 </body>
 
