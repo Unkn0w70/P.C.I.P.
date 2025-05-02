@@ -359,87 +359,10 @@ timer {
 
      <li><a href="#">Manifestações</a></li>
       
-    <li><a id="logoutBtn">Sair</a></li>
+    <li><a href="https://unkn0w70.github.io/P.C.I.P./index.html">Sair</a></li>
 
 
     </ul>
-    
-<script>
-
-    (function(){
-
-      const timerDisplay = document.getElementById('timer');
-
-      const logoutBtn = document.getElementById('logoutBtn');
-
-
-      // Tempo em segundos (exemplo: 5 minutos)
-
-      let timeLeft = 300;
-
-
-      // Atualiza o display do timer no formato mm:ss
-
-      function updateTimerDisplay() {
-
-        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-
-        const seconds = String(timeLeft % 60).padStart(2, '0');
-
-        timerDisplay.textContent = `${minutes}:${seconds}`;
-
-      }
-
-
-      function logout() {
-
-        // Redireciona para a página de login
-
-        window.location.href = 'https://unkn0w70.github.io/P.C.I.P./index.html'; // Altere o nome do arquivo conforme necessário
-
-      }
-
-
-      // Contagem regressiva
-
-      const timerInterval = setInterval(() => {
-
-        timeLeft--;
-
-        updateTimerDisplay();
-
-
-        if (timeLeft <= 0) {
-
-          clearInterval(timerInterval);
-
-          alert('Sua sessão expirou. Você será deslogado.');
-
-          logout();
-
-        }
-
-      }, 1000);
-
-
-      // Ação do botão sair
-
-      logoutBtn.addEventListener('click', () => {
-
-        clearInterval(timerInterval);
-
-        logout();
-
-      });
-
-
-      // Inicia mostrando o tempo completo ao carregar
-
-      updateTimerDisplay();
-
-    })();
-
-  </script>
     
   </nav>
 
