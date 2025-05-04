@@ -29,14 +29,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-                        color: white;
-            padding: 12px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         header h1 {
             font-weight: 700;
@@ -65,10 +57,6 @@
         }
         ul.menu li {
             position: relative;
-        }
-        ul.menu li a {
-            font-weight: 600;
-                        position: relative;
         }
         ul.menu li a {
             font-weight: 600;
@@ -102,11 +90,6 @@
             }
             ul.menu li {
                 padding: 0;
-            }
-            ul.menu li a {
-                padding: 12px 16px;
-                border-bottom: 1px solid #000000;
-                                padding: 0;
             }
             ul.menu li a {
                 padding: 12px 16px;
@@ -145,12 +128,6 @@
         }
         button#addPostBtn {
             background-color: #3f2c28;
-                        font-weight: 700;
-            margin: 0;
-            font-size: 1.4rem;
-        }
-        button#addPostBtn {
-            background-color: #3f2c28;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -178,13 +155,6 @@
             cursor: pointer;
             overflow: hidden;
             transition: max-height 0.4s ease, box-shadow 0.3s ease;
-            max-height: 70px; /* collapsed height */
-            position: relative;
-        }
-        .post-card.expanded {
-            max-height: 500px; /* enough to show full content */
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-                        transition: max-height 0.4s ease, box-shadow 0.3s ease;
             max-height: 70px; /* collapsed height */
             position: relative;
         }
@@ -223,13 +193,6 @@
             z-index: 200;
         }
         .modal-overlay.active {
-                        background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-        }
-        .modal-overlay.active {
             display: flex;
         }
         .modal {
@@ -262,11 +225,6 @@
             resize: vertical;
         }
         .modal textarea {
-                        border-radius: 4px;
-            font-size: 1rem;
-            resize: vertical;
-        }
-        .modal textarea {
             height: 100px;
         }
         .modal .modal-buttons {
@@ -293,14 +251,6 @@
             top: 8px;
             right: 12px;
             background: transparent;
-            border: none;
-            font-size: 1.4rem;
-            cursor: pointer;
-            color: #555;
-            font-weight: 700;
-        }
-        .modal-close:hover {
-                        background: transparent;
             border: none;
             font-size: 1.4rem;
             cursor: pointer;
@@ -339,14 +289,10 @@
         </div>
     </section>
 </main>
-        <div class="posts-grid" id="postsGrid">
-            <!-- Posts serão adicionados aqui -->
-        </div>
-    </section>
-</main>
 <footer>
     &copy; 2025 P.C.I.P. - Direitos reservados
 </footer>
+
 <!-- Modal para adicionar post -->
 <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -364,27 +310,25 @@
         </form>
     </div>
 </div>
+
 <script>
     // Menu toggle script
     const menuToggle = document.getElementById('menuToggle');
     const menu = document.getElementById('menu');
+
     menuToggle.addEventListener('click', () => {
         menu.classList.toggle('expanded');
         const expanded = menu.classList.contains('expanded');
         menuToggle.setAttribute('aria-label', expanded ? 'Fechar menu' : 'Abrir menu');
     });
-    document.addEventListener('click', (event) => {
-            menuToggle.addEventListener('click', () => {
-        menu.classList.toggle('expanded');
-        const expanded = menu.classList.contains('expanded');
-        menuToggle.setAttribute('aria-label', expanded ? 'Fechar menu' : 'Abrir menu');
-    });
+
     document.addEventListener('click', (event) => {
         if (!menu.contains(event.target) && !menuToggle.contains(event.target) && menu.classList.contains('expanded')) {
             menu.classList.remove('expanded');
             menuToggle.setAttribute('aria-label', 'Abrir menu');
         }
     });
+
     // Post functionality
     const addPostBtn = document.getElementById('addPostBtn');
     const modalOverlay = document.getElementById('modalOverlay');
@@ -392,29 +336,29 @@
     const cancelBtn = document.getElementById('cancelBtn');
     const postForm = document.getElementById('postForm');
     const postsGrid = document.getElementById('postsGrid');
+
     function openModal() {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
         postForm.reset();
         document.getElementById('postTitle').focus();
     }
+
     function closeModal() {
         modalOverlay.classList.remove('active');
         modalOverlay.setAttribute('aria-hidden', 'true');
     }
+
     addPostBtn.addEventListener('click', openModal);
     modalCloseBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', (event) => {
-            }
-    addPostBtn.addEventListener('click', openModal);
-    modalCloseBtn.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
+
     modalOverlay.addEventListener('click', (event) => {
         if (event.target === modalOverlay) {
             closeModal();
         }
     });
+
     postForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const title = document.getElementById('postTitle').value.trim();
@@ -424,6 +368,7 @@
             closeModal();
         }
     });
+
     function addPost(title, content) {
         const card = document.createElement('div');
         card.className = 'post-card';
@@ -436,10 +381,11 @@
         const postContent = document.createElement('p');
         postContent.className = 'post-content';
         postContent.textContent = content;
+
         card.appendChild(postTitle);
         card.appendChild(postContent);
 
-         // Toggle expand on click or keyboard (Enter/Space)
+        // Toggle expand on click or keyboard (Enter/Space)
         card.addEventListener('click', () => {
             card.classList.toggle('expanded');
         });
@@ -449,8 +395,10 @@
                 card.classList.toggle('expanded');
             }
         });
+
         postsGrid.prepend(card);
     }
 </script>
 </body>
 </html>
+
