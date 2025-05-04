@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>P.C.I.P. - Posts Dinâmicos</title>
+    <title>P.C.I.P. - Posts Dinâmicos Persistentes</title>
     <style>
         /* Reset */
         * {
@@ -157,6 +157,8 @@
             transition: max-height 0.4s ease, box-shadow 0.3s ease;
             max-height: 70px; /* collapsed height */
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         .post-card.expanded {
             max-height: 500px; /* enough to show full content */
@@ -175,9 +177,31 @@
             color: #222;
             display: none;
             user-select: text;
+            flex-grow: 1;
         }
         .post-card.expanded .post-content {
             display: block;
+        }
+        .post-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .post-buttons button {
+            background-color: #3f2c28;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-weight: 600;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+        .post-buttons button:hover {
+            background-color: #281b17;
         }
         /* Modal styles */
         .modal-overlay {
@@ -293,7 +317,7 @@
     &copy; 2025 P.C.I.P. - Direitos reservados
 </footer>
 
-<!-- Modal para adicionar post -->
+<!-- Modal para adicionar/editar post -->
 <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <button class="modal-close" id="modalCloseBtn" aria-label="Fechar">&times;</button>
@@ -305,7 +329,7 @@
             <textarea id="postContent" name="postContent" required maxlength="1000"></textarea>
             <div class="modal-buttons">
                 <button type="button" id="cancelBtn">Cancelar</button>
-                <button type="submit">Adicionar</button>
+                <button type="submit">Salvar</button>
             </div>
         </form>
     </div>
@@ -329,27 +353,48 @@
         }
     });
 
-    // Post functionality
+    // Post functionality with persistence in localStorage
     const addPostBtn = document.getElementById('addPostBtn');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
     const cancelBtn = document.getElementById('cancelBtn');
     const postForm = document.getElementById('postForm');
     const postsGrid = document.getElementById('postsGrid');
+    let posts = [];
+    let editingPostId = null;
 
-    function openModal() {
+    // Load posts from localStorage on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedPosts = localStorage.getItem('pcipPosts');
+        if (savedPosts) {
+            posts = JSON.parse(savedPosts);
+            posts.forEach(post => renderPost(post));
+        }
+    });
+
+    function openModal(editMode = false, post = null) {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
-        postForm.reset();
+        if (editMode && post) {
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('postContent').value = post.content;
+            document.getElementById('modalTitle').textContent = 'Editar Post';
+            editingPostId = post.id;
+        } else {
+            postForm.reset();
+            document.getElementById('modalTitle').textContent = 'Adicionar Novo Post';
+            editingPostId = null;
+        }
         document.getElementById('postTitle').focus();
     }
 
     function closeModal() {
         modalOverlay.classList.remove('active');
         modalOverlay.setAttribute('aria-hidden', 'true');
+        editingPostId = null;
     }
 
-    addPostBtn.addEventListener('click', openModal);
+    addPostBtn.addEventListener('click', () => openModal(false));
     modalCloseBtn.addEventListener('click', closeModal);
     cancelBtn.addEventListener('click', closeModal);
 
@@ -364,28 +409,84 @@
         const title = document.getElementById('postTitle').value.trim();
         const content = document.getElementById('postContent').value.trim();
         if (title && content) {
-            addPost(title, content);
+            if(editingPostId !== null) {
+                // Editing existing post
+                const index = posts.findIndex(p => p.id === editingPostId);
+                if(index !== -1) {
+                    posts[index].title = title;
+                    posts[index].content = content;
+                    updatePostCard(posts[index]);
+                    savePosts();
+                }
+            } else {
+                // Adding new post
+                const newPost = {
+                    id: Date.now(),
+                    title,
+                    content
+                };
+                posts.unshift(newPost);
+                renderPost(newPost, true);
+                savePosts();
+            }
             closeModal();
         }
     });
 
-    function addPost(title, content) {
+    // Create post card element and add to DOM
+    function renderPost(post, prepend = false) {
+        const card = createPostCard(post);
+        if(prepend){
+            postsGrid.prepend(card);
+        } else {
+            postsGrid.appendChild(card);
+        }
+    }
+
+    // Create a post card DOM element with event listeners
+    function createPostCard(post) {
         const card = document.createElement('div');
         card.className = 'post-card';
         card.tabIndex = 0;
-        // Title element
+        card.dataset.id = post.id;
+
         const postTitle = document.createElement('h3');
         postTitle.className = 'post-title';
-        postTitle.textContent = title;
-        // Content element
+        postTitle.textContent = post.title;
+
         const postContent = document.createElement('p');
         postContent.className = 'post-content';
-        postContent.textContent = content;
+        postContent.textContent = post.content;
+
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.className = 'post-buttons';
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Editar';
+        editBtn.setAttribute('aria-label', `Editar post: ${post.title}`);
+        editBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openModal(true, post);
+        });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Apagar';
+        deleteBtn.setAttribute('aria-label', `Apagar post: ${post.title}`);
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if(confirm(`Tem certeza que deseja apagar o post: "${post.title}"?`)){
+                deletePost(post.id);
+            }
+        });
+
+        buttonsDiv.appendChild(editBtn);
+        buttonsDiv.appendChild(deleteBtn);
 
         card.appendChild(postTitle);
         card.appendChild(postContent);
+        card.appendChild(buttonsDiv);
 
-        // Toggle expand on click or keyboard (Enter/Space)
+        // Toggle expand/collapse on card click or keyboard Enter/Space
         card.addEventListener('click', () => {
             card.classList.toggle('expanded');
         });
@@ -396,7 +497,33 @@
             }
         });
 
-        postsGrid.prepend(card);
+        return card;
+    }
+
+    // Update existing post card DOM element
+    function updatePostCard(post) {
+        const card = postsGrid.querySelector(`.post-card[data-id='${post.id}']`);
+        if(card){
+            card.querySelector('.post-title').textContent = post.title;
+            card.querySelector('.post-content').textContent = post.content;
+            card.classList.remove('expanded'); // Collapse after edit
+        }
+    }
+
+    // Delete post by ID both from array and DOM
+    function deletePost(id) {
+        const index = posts.findIndex(p => p.id === id);
+        if(index !== -1){
+            posts.splice(index,1);
+            savePosts();
+            const card = postsGrid.querySelector(`.post-card[data-id='${id}']`);
+            if(card) card.remove();
+        }
+    }
+
+    // Save posts array to localStorage
+    function savePosts() {
+        localStorage.setItem('pcipPosts', JSON.stringify(posts));
     }
 </script>
 </body>
