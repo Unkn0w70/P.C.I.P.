@@ -353,7 +353,7 @@
         }
     });
 
-    // Post functionality with persistence in localStorage
+    // Post functionality with persistence in localStorage, and cross-tab updates
     const addPostBtn = document.getElementById('addPostBtn');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -363,14 +363,23 @@
     let posts = [];
     let editingPostId = null;
 
-    // Load posts from localStorage on page load
-    document.addEventListener('DOMContentLoaded', () => {
+    // Load posts from localStorage on page load and render
+    function loadPosts() {
         const savedPosts = localStorage.getItem('pcipPosts');
         if (savedPosts) {
-            posts = JSON.parse(savedPosts);
-            posts.forEach(post => renderPost(post));
+            try {
+                posts = JSON.parse(savedPosts);
+            } catch {
+                posts = [];
+            }
+        } else {
+            posts = [];
         }
-    });
+        postsGrid.innerHTML = '';
+        posts.forEach(post => renderPost(post));
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPosts);
 
     function openModal(editMode = false, post = null) {
         modalOverlay.classList.add('active');
@@ -502,7 +511,7 @@
 
     // Update existing post card DOM element
     function updatePostCard(post) {
-        const card = postsGrid.querySelector(`.post-card[data-id='${post.id}']`);
+        const card = postsGrid.querySelector(\`.post-card[data-id='\${post.id}']\`);
         if(card){
             card.querySelector('.post-title').textContent = post.title;
             card.querySelector('.post-content').textContent = post.content;
@@ -516,7 +525,7 @@
         if(index !== -1){
             posts.splice(index,1);
             savePosts();
-            const card = postsGrid.querySelector(`.post-card[data-id='${id}']`);
+            const card = postsGrid.querySelector(\`.post-card[data-id='\${id}']\`);
             if(card) card.remove();
         }
     }
@@ -525,6 +534,13 @@
     function savePosts() {
         localStorage.setItem('pcipPosts', JSON.stringify(posts));
     }
+
+    // Listen for storage events to update posts live across tabs/windows
+    window.addEventListener('storage', (event) => {
+        if(event.key === 'pcipPosts') {
+            loadPosts();
+        }
+    });
 </script>
 </body>
 </html>
