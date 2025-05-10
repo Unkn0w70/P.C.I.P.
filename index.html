@@ -1,126 +1,123 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>P.C.I.P. - Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - PCIP</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #d1b082;
-      color: #333;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
+      margin: 0;
     }
-
     .login-container {
-      background-color: #fff3e6;
+      background: #fff;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       width: 100%;
       max-width: 400px;
     }
-
-    .login-title {
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #3f2c28;
+    h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
-
     label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
+      margin-bottom: 8px;
+      font-weight: bold;
     }
-
-    input[type="text"],
-    input[type="password"] {
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-
     button {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       background-color: #3f2c28;
       color: white;
       border: none;
       border-radius: 5px;
-      font-size: 1rem;
       cursor: pointer;
-      font-weight: bold;
+      font-size: 1rem;
     }
-
-    button:hover {
-      background-color: #2c1e1b;
-    }
-
     .error {
       color: red;
       margin-top: 10px;
       text-align: center;
-      font-weight: bold;
     }
   </style>
 </head>
-
 <body>
   <div class="login-container">
-    <div class="login-title">Login - P.C.I.P.</div>
+    <h2>Login - P.C.I.P.</h2>
     <form id="loginForm">
-      <label for="username">Usuário</label>
-      <input type="text" id="username" name="username" placeholder="Digite seu usuário" required />
+      <label for="username">Usuário:</label>
+      <input type="text" id="username" name="username" required>
 
-      <label for="password">Senha</label>
-      <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
+      <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" required>
 
       <button type="submit">Entrar</button>
       <div id="error" class="error"></div>
     </form>
   </div>
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script>
-    const form = document.getElementById("loginForm");
-    const errorDiv = document.getElementById("error");
+    const supabaseUrl = 'https://rzuaeeccebjjafbiyekz.supabase.co'; 
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ6dWFlZWNjZWJqamFmYml5ZWt6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY4NDg4NDYsImV4cCI6MjA2MjQyNDg0Nn0.f4Lg371uNgiERgqdL8ncYwAQ6anyPOo-5bOYsewLvgY'; 
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Lista de usuários válidos
-    const usuarios = [
-      { usuario: "Ricardo Ramirèz", senha: "321941415" },
-      { usuario: "usuario1", senha: "senha1" },
-      { usuario: "teste", senha: "abc123" }
+    const users = [
+      { username: 'Ricardo Ramirèz', password: '321941415' },
+      { username: 'usuario1', password: 'senha1' },
+      { username: 'pcip', password: 'pcip2025' }
     ];
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    async function registrarAcesso(username) {
+      const userAgent = navigator.userAgent;
+      const ip = await fetch('https://api.ipify.org?format=json')
+                      .then(res => res.json())
+                      .then(data => data.ip)
+                      .catch(() => 'IP não encontrado');
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+      const { error } = await supabase.from('logins').insert([
+        {
+          username: username,
+          user_agent: userAgent,
+          ip_address: ip
+        }
+      ]);
 
-      const usuarioValido = usuarios.find(
-        (u) => u.usuario === username && u.senha === password
-      );
-
-      if (usuarioValido) {
-        window.location.href = "https://unkn0w70.github.io/P.C.I.P./index/home"; // Redireciona para página principal
+      if (error) {
+        console.error('Erro ao registrar login:', error);
       } else {
-        errorDiv.textContent = "Usuário ou senha inválidos.";
+        console.log('Login registrado com sucesso!');
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        await registrarAcesso(username);
+        window.location.href = 'https://unkn0w70.github.io/P.C.I.P./index/home';
+      } else {
+        document.getElementById('error').textContent = 'Usuário ou senha inválidos';
       }
     });
   </script>
 </body>
-
 </html>
