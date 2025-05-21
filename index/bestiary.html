@@ -63,10 +63,6 @@
       user-select: none;
     }
 
-    ul.menu li {
-      position: relative;
-    }
-
     ul.menu li a {
       font-weight: 600;
       padding: 8px 6px;
@@ -105,10 +101,6 @@
       ul.menu li a {
         padding: 12px 16px;
         border-bottom: 1px solid #000000;
-      }
-
-      ul.menu li:last-child a {
-        border-bottom: none;
       }
     }
 
@@ -149,6 +141,25 @@
       display: block;
     }
 
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      margin: 0 4px;
+      padding: 6px 10px;
+      background-color: #3f2c28;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .pagination button.active {
+      background-color: #000;
+    }
+
     footer {
       background-color: #222;
       color: #ccc;
@@ -165,68 +176,112 @@
     <nav>
       <button aria-label="Abrir menu" class="menu-button" id="menuToggle">&#9776;</button>
       <ul class="menu" id="menu">
-        <li><a href="https://unkn0w70.github.io/P.C.I.P./index/home">Página Inicial</a></li>
-
+         <li><a href="https://unkn0w70.github.io/P.C.I.P./index/home">Página Inicial</a></li>
       <li><a href="https://unkn0w70.github.io/P.C.I.P./index/introduction">Introdução</a></li>
-
       <li><a href="#">Elementos</a></li>
-
       <li><a href="https://unkn0w70.github.io/P.C.I.P./index/bestiary">Criaturas</a></li>
-
       <li><a href="#">Estimativas Técnicas</a></li>
-
       <li><a href="#">Invocação</a></li>
-
      <li><a href="#">Manifestações</a></li>
-
       <li><a href="https://unkn0w70.github.io/P.C.I.P./index/contact">Contato</a></li>
-      
     <li><a href="https://unkn0w70.github.io/P.C.I.P./index.html">Sair</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <h2 class="section-title">Modelos de Posts</h2>
-    <div class="card" onclick="this.classList.toggle('expanded')">
-      <h3>Modelo 1: Relatório de Ocorrência</h3>
-      <div class="card-content">
-        <p>Descrição da ocorrência, local do evento, envolvidos e medidas tomadas pela equipe.</p>
-      </div>
-    </div>
-
-    <div class="card" onclick="this.classList.toggle('expanded')">
-      <h3>Modelo 2: Registro de Criatura</h3>
-      <div class="card-content">
-        <p>Nome da entidade, classificação, comportamento observado, local de avistamento, e medidas de contenção.</p>
-      </div>
-    </div>
-
-    <div class="card" onclick="this.classList.toggle('expanded')">
-      <h3>Modelo 3: Análise Técnica</h3>
-      <div class="card-content">
-        <p>Resumo técnico do fenômeno estudado, metodologia empregada, ferramentas utilizadas e resultados obtidos.</p>
-      </div>
-    </div>
+    <h2 class="section-title">Bestiário</h2>
+    <div id="posts-container"></div>
+    <div class="pagination" id="pagination"></div>
   </main>
 
   <footer>
     <a href="https://unkn0w70.github.io/P.C.I.P./index/security" style="color: inherit; text-decoration: none;">
-    &copy; 2025 P.C.I.P. - Direitos reservados
+      &copy; 2025 P.C.I.P. - Direitos reservados
+    </a>
   </footer>
 
   <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const menu = document.getElementById('menu');
+    const postsPorPagina = 3;
+    const posts = Array.from({ length: 15 }, (_, i) => ({
+      titulo: `Post ${i + 1}`,
+      conteudo: `Conteúdo detalhado do post número ${i + 1}.`
+    }));
 
-    menuToggle.addEventListener('click', () => {
+    let paginaAtual = 1;
+
+    function renderizarPosts() {
+      const inicio = (paginaAtual - 1) * postsPorPagina;
+      const fim = inicio + postsPorPagina;
+      const postsVisiveis = posts.slice(inicio, fim);
+
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+
+      postsVisiveis.forEach(post => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<h3>${post.titulo}</h3><div class="card-content"><p>${post.conteudo}</p></div>`;
+        div.onclick = () => div.classList.toggle('expanded');
+        container.appendChild(div);
+      });
+    }
+
+    function renderizarPaginacao() {
+      const totalPaginas = Math.ceil(posts.length / postsPorPagina);
+      const paginacao = document.getElementById('pagination');
+      paginacao.innerHTML = '';
+
+      if (paginaAtual > 1) {
+        const btnAnterior = document.createElement('button');
+        btnAnterior.textContent = 'Anterior';
+        btnAnterior.onclick = () => {
+          paginaAtual--;
+          atualizar();
+        };
+        paginacao.appendChild(btnAnterior);
+      }
+
+      for (let i = 1; i <= totalPaginas; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        if (i === paginaAtual) btn.classList.add('active');
+        btn.onclick = () => {
+          paginaAtual = i;
+          atualizar();
+        };
+        paginacao.appendChild(btn);
+      }
+
+      if (paginaAtual < totalPaginas) {
+        const btnProximo = document.createElement('button');
+        btnProximo.textContent = 'Próximo';
+        btnProximo.onclick = () => {
+          paginaAtual++;
+          atualizar();
+        };
+        paginacao.appendChild(btnProximo);
+      }
+    }
+
+    function atualizar() {
+      renderizarPosts();
+      renderizarPaginacao();
+    }
+
+    atualizar();
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      const menu = document.getElementById('menu');
       menu.classList.toggle('expanded');
       const expanded = menu.classList.contains('expanded');
       menuToggle.setAttribute('aria-label', expanded ? 'Fechar menu' : 'Abrir menu');
     });
 
     document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && !menuToggle.contains(event.target) && menu.classList.contains('expanded')) {
+      const menu = document.getElementById('menu');
+      const menuToggle = document.getElementById('menuToggle');
+      if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
         menu.classList.remove('expanded');
         menuToggle.setAttribute('aria-label', 'Abrir menu');
       }
