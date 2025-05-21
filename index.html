@@ -3,82 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login - P.C.I.P.</title>
+  <title>P.C.I.P. - Login</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background-color: #d1b082;
-      font-family: sans-serif;
+      color: #333;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
     }
-    .login-box {
-      background: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    .login-container {
+      background-color: #fff3e6;
+      padding: 30px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       width: 100%;
       max-width: 400px;
     }
-    h2 {
+    .login-container h2 {
       margin-top: 0;
+      margin-bottom: 20px;
       text-align: center;
+      color: #3f2c28;
     }
-    input {
+    .login-container label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
     }
-    button {
+    .login-container button {
       width: 100%;
       padding: 10px;
-      margin-top: 15px;
       background-color: #3f2c28;
-      color: #fff;
+      color: white;
       border: none;
+      border-radius: 5px;
+      font-weight: bold;
       cursor: pointer;
+      font-size: 1rem;
     }
-    .error {
+    .login-container button:hover {
+      background-color: #2d1f1c;
+    }
+    .error-message {
       color: red;
       text-align: center;
-      margin-top: 10px;
+      margin-bottom: 15px;
     }
   </style>
 </head>
 <body>
+  <div class="login-container">
+    <h2>Login - P.C.I.P.</h2>
+    <div id="error" class="error-message"></div>
+    <form onsubmit="return loginUser(event)">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" required />
+      <label for="password">Senha</label>
+      <input type="password" id="password" required />
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
 
-<div class="login-box">
-  <h2>Login - P.C.I.P</h2>
-  <input type="text" id="username" placeholder="Usuário" />
-  <input type="password" id="password" placeholder="Senha" />
-  <button onclick="login()">Entrar</button>
-  <div class="error" id="error"></div>
-</div>
+  <script>
+    const users = [
+      { username: "admin", password: "1234" },
+      { username: "usuario1", password: "senha1" },
+      { username: "agente_zumbi", password: "contencao2025" }
+    ];
 
-<script>
-  const usuarios = [
-    { username: "Ricardo Ramirèz", password: "321941415" },
-    { username: "usuario", password: "senha" }
-  ];
+    function loginUser(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorDiv = document.getElementById('error');
 
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
-    const erro = document.getElementById("error");
+      const userFound = users.find(user => user.username === username && user.password === password);
 
-    const valido = usuarios.find(u => u.username === user && u.password === pass);
-
-    if (valido) {
-      erro.textContent = "";
-      // Aqui entra o registro com Supabase (a adicionar)
-      window.location.href = "https://unkn0w70.github.io/P.C.I.P./index/home";
-    } else {
-      erro.textContent = "Usuário ou senha inválidos.";
+      if (userFound) {
+        window.location.href = "https://unkn0w70.github.io/P.C.I.P./index/home"; // ou outro redirecionamento
+      } else {
+        errorDiv.textContent = "Usuário ou senha inválidos.";
+      }
     }
-  }
-</script>
-
+  </script>
 </body>
 </html>
