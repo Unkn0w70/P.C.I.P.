@@ -119,6 +119,36 @@
       font-size: 1.4rem;
     }
 
+    .filtro-categorias {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+   .filtro-categorias button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #3f2c28;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+    @media (max-width: 768px) {
+      .filtro-categorias {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filtro-categorias button {
+        width: 100%;
+        font-size: 1rem;
+      }
+    }
+
     .card {
       background-color: #fff;
       border-radius: 8px;
@@ -177,7 +207,7 @@
     <nav>
       <button aria-label="Abrir menu" class="menu-button" id="menuToggle">&#9776;</button>
       <ul class="menu" id="menu">
-         <li><a href="https://unkn0w70.github.io/P.C.I.P./index/home">Página Inicial</a></li>
+        <li><a href="https://unkn0w70.github.io/P.C.I.P./index/home">Página Inicial</a></li>
       <li><a href="https://unkn0w70.github.io/P.C.I.P./index/introduction">Introdução</a></li>
       <li><a href="#">Elementos</a></li>
       <li><a href="https://unkn0w70.github.io/P.C.I.P./index/bestiary">Criaturas</a></li>
@@ -192,6 +222,14 @@
 
   <main>
     <h2 class="section-title">Bestiário</h2>
+    <div class="filtro-categorias">
+      <button data-categoria="todos">Todos</button>
+      <button data-categoria="Conhecimento">Conhecimento</button>
+      <button data-categoria="Energia">Energia</button>
+      <button data-categoria="Morte">Morte</button>
+      <button data-categoria="Sangue">Sangue</button>
+      <button data-categoria="Medo">Medo</button>
+    </div>
     <div id="posts-container"></div>
     <div class="pagination" id="pagination"></div>
   </main>
@@ -204,38 +242,56 @@
 
   <script>
     const postsPorPagina = 3;
-    const posts = Array.from({ length: 15 }, (_, i) => ({
-      titulo: `Post ${i + 1}`,
-      conteudo: `Conteúdo detalhado do post número ${i + 1}.`
-    }));
+    const posts = [
+      { titulo: "Post 1", conteudo: "Conteúdo do post 1", categoria: "Conhecimento" },
+      { titulo: "Post 2", conteudo: "Conteúdo do post 2", categoria: "Categoria B" },
+      { titulo: "Post 3", conteudo: "Conteúdo do post 3", categoria: "Categoria C" },
+      { titulo: "Post 4", conteudo: "Conteúdo do post 4", categoria: "Conhecimento" },
+      { titulo: "Post 5", conteudo: "Conteúdo do post 5", categoria: "Categoria B" },
+      { titulo: "Post 6", conteudo: "Conteúdo do post 6", categoria: "Categoria C" },
+      { titulo: "Post 3", conteudo: "Conteúdo do post 3", categoria: "Conhecimento" },
+      { titulo: "Post 4", conteudo: "Conteúdo do post 4", categoria: "Categoria D" },
+      { titulo: "Post 5", conteudo: "Conteúdo do post 5", categoria: "Categoria E" },
+      { titulo: "Post 6", conteudo: "Conteúdo do post 6", categoria: "Categoria D" },
+    ];
 
     let paginaAtual = 1;
+    let categoriaAtual = "todos";
 
     function renderizarPosts() {
+      const container = document.getElementById("posts-container");
+      container.innerHTML = "";
+
+      const filtrados = categoriaAtual === "todos"
+        ? posts
+        : posts.filter(p => p.categoria === categoriaAtual);
+
       const inicio = (paginaAtual - 1) * postsPorPagina;
       const fim = inicio + postsPorPagina;
-      const postsVisiveis = posts.slice(inicio, fim);
+      const visiveis = filtrados.slice(inicio, fim);
 
-      const container = document.getElementById('posts-container');
-      container.innerHTML = '';
-
-      postsVisiveis.forEach(post => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `<h3>${post.titulo}</h3><div class="card-content"><p>${post.conteudo}</p></div>`;
-        div.onclick = () => div.classList.toggle('expanded');
+      visiveis.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<h3>${post.titulo} <span style="float:right;font-size:0.8rem;color:#666">${post.categoria}</span></h3><div class="card-content"><p>${post.conteudo}</p></div>`;
+        div.onclick = () => div.classList.toggle("expanded");
         container.appendChild(div);
       });
     }
 
     function renderizarPaginacao() {
-      const totalPaginas = Math.ceil(posts.length / postsPorPagina);
-      const paginacao = document.getElementById('pagination');
-      paginacao.innerHTML = '';
+      const paginacao = document.getElementById("pagination");
+      paginacao.innerHTML = "";
+
+      const filtrados = categoriaAtual === "todos"
+        ? posts
+        : posts.filter(p => p.categoria === categoriaAtual);
+
+      const totalPaginas = Math.ceil(filtrados.length / postsPorPagina);
 
       if (paginaAtual > 1) {
-        const btnAnterior = document.createElement('button');
-        btnAnterior.textContent = 'Anterior';
+        const btnAnterior = document.createElement("button");
+        btnAnterior.textContent = "Anterior";
         btnAnterior.onclick = () => {
           paginaAtual--;
           atualizar();
@@ -244,9 +300,9 @@
       }
 
       for (let i = 1; i <= totalPaginas; i++) {
-        const btn = document.createElement('button');
+        const btn = document.createElement("button");
         btn.textContent = i;
-        if (i === paginaAtual) btn.classList.add('active');
+        if (i === paginaAtual) btn.classList.add("active");
         btn.onclick = () => {
           paginaAtual = i;
           atualizar();
@@ -255,8 +311,8 @@
       }
 
       if (paginaAtual < totalPaginas) {
-        const btnProximo = document.createElement('button');
-        btnProximo.textContent = 'Próximo';
+        const btnProximo = document.createElement("button");
+        btnProximo.textContent = "Próximo";
         btnProximo.onclick = () => {
           paginaAtual++;
           atualizar();
@@ -269,6 +325,14 @@
       renderizarPosts();
       renderizarPaginacao();
     }
+
+    document.querySelectorAll(".filtro-categorias button").forEach(btn => {
+      btn.onclick = () => {
+        categoriaAtual = btn.dataset.categoria;
+        paginaAtual = 1;
+        atualizar();
+      };
+    });
 
     atualizar();
 
