@@ -33,15 +33,22 @@
     tr:nth-child(even) {
       background-color: #f8e6d2;
     }
-    .clear-btn {
+    .btn {
       margin-top: 20px;
       padding: 10px 15px;
-      background-color: #a33;
+      background-color: #3f2c28;
       color: white;
       border: none;
       border-radius: 5px;
       font-weight: bold;
       cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #2d1f1c;
+    }
+    .clear-btn {
+      background-color: #a33;
+      margin-left: 10px;
     }
     .clear-btn:hover {
       background-color: #822;
@@ -87,16 +94,17 @@
           <th>Usuário</th>
           <th>Data/Hora</th>
           <th>Navegador</th>
+          <th>Evento</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
-    <button class="clear-btn" onclick="limparLogs()">Limpar Logs</button>
+    <button class="btn" onclick="carregarLogs()">🔄 Recarregar</button>
+    <button class="btn clear-btn" onclick="limparLogs()">🗑️ Limpar Logs</button>
   </div>
 
   <script>
-    const senhaHashAutorizada = "4e2079df7800a61e3ee60dcd8a9da4ff7bf665d50e3bebdfb616de396f935956"
-;
+    const senhaHashAutorizada = "4e2079df7800a61e3ee60dcd8a9da4ff7bf665d50e3bebdfb616de396f935956";
 
     async function gerarHash(texto) {
       const encoder = new TextEncoder();
@@ -128,7 +136,7 @@
 
       if (logs.length === 0) {
         const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="3" style="text-align:center;">Nenhum log encontrado.</td>`;
+        row.innerHTML = `<td colspan="4" style="text-align:center;">Nenhum log encontrado.</td>`;
         tbody.appendChild(row);
         return;
       }
@@ -139,6 +147,7 @@
           <td>${log.usuario}</td>
           <td>${log.dataHora}</td>
           <td>${log.navegador}</td>
+          <td>${log.evento || "login"}</td>
         `;
         tbody.appendChild(row);
       });
