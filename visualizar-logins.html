@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logs de Acesso - P.C.I.P.</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fef9f4;
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #3f2c28;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff3e6;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #3f2c28;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f8e6d2;
+    }
+    .clear-btn {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #a33;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .clear-btn:hover {
+      background-color: #822;
+    }
+    .password-container {
+      text-align: center;
+      margin-top: 100px;
+    }
+    .password-container input {
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #999;
+    }
+    .password-container button {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background-color: #3f2c28;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="authContainer" class="password-container">
+    <h2>🔐 Acesso restrito aos Logs</h2>
+    <input type="password" id="passwordInput" placeholder="Digite a senha de acesso" />
+    <button onclick="verificarSenha()">Entrar</button>
+    <div id="errorMsg" class="error-message"></div>
+  </div>
+
+  <div id="logContainer" style="display:none;">
+    <h2>Logs de Acesso - P.C.I.P.</h2>
+    <table id="logTable">
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Data/Hora</th>
+          <th>Navegador</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button class="clear-btn" onclick="limparLogs()">Limpar Logs</button>
+  </div>
+
+  <script>
+    const senhaHashAutorizada = "4e2079df7800a61e3ee60dcd8a9da4ff7bf665d50e3bebdfb616de396f935956"
+;
+
+    async function gerarHash(texto) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(texto);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verificarSenha() {
+      const senhaDigitada = document.getElementById("passwordInput").value;
+      const erro = document.getElementById("errorMsg");
+      erro.textContent = "";
+
+      const hash = await gerarHash(senhaDigitada);
+      if (hash === senhaHashAutorizada) {
+        document.getElementById("authContainer").style.display = "none";
+        document.getElementById("logContainer").style.display = "block";
+        carregarLogs();
+      } else {
+        erro.textContent = "Senha incorreta!";
+      }
+    }
+
+    function carregarLogs() {
+      const logs = JSON.parse(localStorage.getItem("logins") || "[]");
+      const tbody = document.querySelector("#logTable tbody");
+      tbody.innerHTML = "";
+
+      if (logs.length === 0) {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td colspan="3" style="text-align:center;">Nenhum log encontrado.</td>`;
+        tbody.appendChild(row);
+        return;
+      }
+
+      logs.forEach(log => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${log.usuario}</td>
+          <td>${log.dataHora}</td>
+          <td>${log.navegador}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function limparLogs() {
+      if (confirm("Tem certeza que deseja apagar todos os logs?")) {
+        localStorage.removeItem("logins");
+        carregarLogs();
+      }
+    }
+  </script>
+</body>
+</html>
