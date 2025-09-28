@@ -26,31 +26,16 @@
       font-size: 1.5rem;
       margin-top: 20px;
       color: #ffcccc;
-    }
-    .timer {
-      margin-top: 15px;
-      font-size: 1rem;
-      color: #aaa;
-   }
+  
   </style>
 </head>
 <body>
   <div class="x-symbol">✖</div>
   <div class="message">Privilégios insuficientes, contate o Conselho.</div>
- <div class="timer">Redirecionando em <span id="countdown">5</span> segundos...</div>
-
-  <script>
-    let tempo = 5;
-    const countdown = document.getElementById("countdown");
-
-    const interval = setInterval(() => {
-      tempo--;
-      countdown.textContent = tempo;
-      if (tempo <= 0) {
-        clearInterval(interval);
-        window.history.back(); // volta para a página anterior
-      }
-    }, 1000);
+<script>
+    setTimeout(() => {
+      window.history.back();
+    }, 5000);
   </script>
 </body>
 </html>
